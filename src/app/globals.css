@@ -1,26 +1,68 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fdfaf6;
+  --foreground: #0f172a;
+  --muted: #eef2f6;
+  --primary: #1fb6c9;
+  --primary-foreground: #063640;
+  --secondary: #f1d5a5;
+  --secondary-foreground: #3f2f1f;
+  --accent: #f26663;
+  --accent-foreground: #491919;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --ring: #f26663;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --radius-lg: 1.25rem;
+  --radius-md: 1rem;
+  --radius-sm: 0.75rem;
 }
 
 body {
-  background: var(--background);
+  background: radial-gradient(circle at 15% 20%, rgba(255, 208, 146, 0.35), transparent 30%),
+    radial-gradient(circle at 85% 10%, rgba(31, 182, 201, 0.25), transparent 28%),
+    linear-gradient(180deg, #fdfaf6 0%, #f6f1e8 35%, #eef7fb 100%);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  scroll-behavior: smooth;
+}
+
+a {
+  color: inherit;
+}
+
+.main-shell {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 25px 60px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(14px);
+}
+
+.section-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.text-muted {
+  color: #4b5563;
 }
