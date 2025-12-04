@@ -1,5 +1,33 @@
 import type { Accommodation, MapPoint, Place, Route } from "@/types/content";
 
+type NavLink = {
+  href: string;
+  label: string;
+};
+
+export const navLinks: NavLink[] = [
+  {
+    href: "/",
+    label: "Главная",
+  },
+  {
+    href: "/routes",
+    label: "Маршруты",
+  },
+  {
+    href: "/places",
+    label: "Места",
+  },
+  {
+    href: "/accommodation",
+    label: "Жильё",
+  },
+  {
+    href: "/map",
+    label: "Карта",
+  },
+];
+
 export const places: Place[] = [
   {
     id: "genoese-fortress",
