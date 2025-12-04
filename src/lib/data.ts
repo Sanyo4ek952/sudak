@@ -1,6 +1,11 @@
 import type { Accommodation, MapPoint, Place, Route } from "@/types/content";
 
-export const navLinks = [
+export type NavLink = {
+  href: string;
+  label: string;
+};
+
+export const navLinks: NavLink[] = [
   { href: "/", label: "Главная" },
   { href: "/map", label: "Карта" },
   { href: "/routes", label: "Маршруты" },
