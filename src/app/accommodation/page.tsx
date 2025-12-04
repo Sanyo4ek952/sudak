@@ -1,40 +1,30 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { accommodations } from "@/lib/data";
+import { headers } from "next/headers";
 
-const AccommodationPage = () => {
+import { AccommodationFilters } from "@/components/sections/accommodation-filters";
+import type { Accommodation } from "@/types/accommodation";
+
+const getBaseUrl = () => {
+  const headerList = headers();
+  const protocol = headerList.get("x-forwarded-proto") ?? "http";
+  const host = headerList.get("x-forwarded-host") ?? headerList.get("host") ?? "localhost:3000";
+  return `${protocol}://${host}`;
+};
+
+const AccommodationPage = async () => {
+  const response = await fetch(`${getBaseUrl()}/api/accommodation`, { cache: "no-store" });
+  const data = (await response.json()) as Accommodation[];
+
   return (
     <div className="space-y-6">
       <header className="space-y-2">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Жильё</p>
         <h1 className="text-3xl font-semibold text-foreground sm:text-4xl">Где остановиться в Судаке</h1>
         <p className="text-base text-muted">
-          Подборка уютных гостиниц, апартаментов и гостевых домов рядом с морем и виноградниками.
+          Подборка уютных гостевых домов, апартаментов и комнат рядом с морем, крепостью и виноградниками.
         </p>
       </header>
-      <div className="section-grid">
-        {accommodations.map((stay) => (
-          <Card key={stay.id}>
-            <CardHeader>
-              <Badge variant="default">от {stay.priceFrom}₽</Badge>
-              <CardTitle>{stay.name}</CardTitle>
-              <CardDescription>{stay.type}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2 text-sm text-muted">
-                <p>{stay.distance}</p>
-                <div className="flex flex-wrap gap-2">
-                  {stay.perks.map((perk) => (
-                    <Badge key={perk} variant="outline">
-                      {perk}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+
+      <AccommodationFilters accommodations={data} />
     </div>
   );
 };
