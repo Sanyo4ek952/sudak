@@ -1,29 +1,31 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { places } from "@/lib/data";
+import { headers } from "next/headers";
 
-const PlacesPage = () => {
+import { PlaceCard } from "@/components/sections/place-card";
+import type { Place } from "@/types/place";
+
+const getBaseUrl = () => {
+  const headerList = headers();
+  const protocol = headerList.get("x-forwarded-proto") ?? "http";
+  const host = headerList.get("x-forwarded-host") ?? headerList.get("host") ?? "localhost:3000";
+  return `${protocol}://${host}`;
+};
+
+const PlacesPage = async () => {
+  const response = await fetch(`${getBaseUrl()}/api/places`, { cache: "no-store" });
+  const data = (await response.json()) as Place[];
+
   return (
     <div className="space-y-6">
       <header className="space-y-2">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Достопримечательности</p>
         <h1 className="text-3xl font-semibold text-foreground sm:text-4xl">Места, которые хочется сохранить</h1>
         <p className="text-base text-muted">
-          Исторические памятники, морские виды, виноградники и теплые прогулки по побережью.
+          Исторические памятники, морские виды и тёплые прогулки по побережью — выбирайте точку старта путешествия.
         </p>
       </header>
       <div className="section-grid">
-        {places.map((place) => (
-          <Card key={place.id}>
-            <CardHeader>
-              <Badge variant="accent">{place.category}</Badge>
-              <CardTitle>{place.title}</CardTitle>
-              <CardDescription>{place.description}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-sm text-muted">{place.location}</div>
-            </CardContent>
-          </Card>
+        {data.map((place) => (
+          <PlaceCard key={place.id} place={place} />
         ))}
       </div>
     </div>

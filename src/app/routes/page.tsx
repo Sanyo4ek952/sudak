@@ -1,8 +1,19 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { routes } from "@/lib/data";
+import { headers } from "next/headers";
 
-const RoutesPage = () => {
+import { RouteCard } from "@/components/sections/route-card";
+import type { Route } from "@/types/route";
+
+const getBaseUrl = () => {
+  const headerList = headers();
+  const protocol = headerList.get("x-forwarded-proto") ?? "http";
+  const host = headerList.get("x-forwarded-host") ?? headerList.get("host") ?? "localhost:3000";
+  return `${protocol}://${host}`;
+};
+
+const RoutesPage = async () => {
+  const response = await fetch(`${getBaseUrl()}/api/routes`, { cache: "no-store" });
+  const data = (await response.json()) as Route[];
+
   return (
     <div className="space-y-6">
       <header className="space-y-2">
@@ -13,26 +24,8 @@ const RoutesPage = () => {
         </p>
       </header>
       <div className="section-grid">
-        {routes.map((route) => (
-          <Card key={route.id}>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <Badge variant="default">{route.distance}</Badge>
-                <span className="text-sm text-muted">{route.duration}</span>
-              </div>
-              <CardTitle>{route.title}</CardTitle>
-              <CardDescription>{route.description}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-2 text-sm text-muted">
-                {route.tags.map((tag) => (
-                  <Badge key={tag} variant="outline">
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+        {data.map((route) => (
+          <RouteCard key={route.id} route={route} />
         ))}
       </div>
     </div>
