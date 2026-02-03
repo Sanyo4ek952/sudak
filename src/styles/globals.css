@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply bg-pearl-50 text-ink-900 font-sans;
+}
+
+.container-page {
+  @apply mx-auto w-full max-w-6xl px-6;
+}
+
+.hero-gradient {
+  background: radial-gradient(circle at top, rgba(91, 140, 255, 0.15), transparent 55%),
+    linear-gradient(120deg, rgba(78, 123, 108, 0.2), rgba(247, 246, 242, 0.4));
+}
